@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="blog">
+
+<!-- 블로그 정보 하나 가져오기 -->
+<select id="selectBlog" parameterType="String" resultType="com.javaex.vo.BlogVo">
+	<![CDATA[
+		select  b.id,
+		        b.blogTitle,
+		        b.logoFile,
+		        u.username
+		from    users u, blog b
+		where   u.id = b.id
+		and     b.id = #{id}
+	]]>
+</select>
+
+<!-- 가입한 유저의 블로그 생성 -->
+<insert id="insert" parameterType="com.javaex.vo.BlogVo">
+	<![CDATA[
+	insert into blog
+	values (#{id}, #{blogTitle}, 'spring-logo.jpg')
+	]]>
+</insert>
+
+<!-- 블로그 수정하기 -->
+<update id="update" parameterType="com.javaex.vo.BlogVo">
+	<![CDATA[
+		update  blog
+		set     blogTitle = #{blogTitle}    
+	]]>
+	<if test="logoFile != null and logoFile != '' ">
+		        ,logoFile = #{logoFile}
+	</if>	        
+	<![CDATA[	        
+		where  id = #{id}
+	]]>
+</update>
+
+</mapper>
